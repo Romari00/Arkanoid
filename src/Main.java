@@ -1,16 +1,11 @@
-import javax.swing.JFrame;
-import javax.swing.Timer;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.JPanel;
 
 public class Main {
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
             }
@@ -22,9 +17,17 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GamePanel gamePanel = new GamePanel();
-        frame.add(gamePanel);
+        MainMenu mainMenu = new MainMenu(gamePanel);
 
-        GameEngine gameEngine = new GameEngine(gamePanel);
+        JPanel cards = new JPanel(new CardLayout());
+        cards.add(mainMenu, "MainMenu");
+        cards.add(gamePanel, "GamePanel");
+
+        frame.add(cards);
+
+        mainMenu.setCardLayout((CardLayout) cards.getLayout());
+
+        GameEngine gameEngine = new GameEngine(gamePanel, mainMenu);
 
         frame.pack();
         frame.setResizable(false);
