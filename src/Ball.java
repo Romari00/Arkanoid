@@ -1,11 +1,13 @@
+
 public class Ball {
     private int x;
     private int y;
     private int diameter;
-    private int speedX;
-    private int speedY;
+    private double speedX;
+    private double speedY;
 
-    public Ball(int x, int y, int diameter, int speedX,int speedY) {
+
+    public Ball(int x, int y, int diameter, double speedX,double speedY) {
         this.x = x;
         this.y = y;
         this.diameter = diameter;
@@ -19,6 +21,24 @@ public class Ball {
     public int getY() {
         return y;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
+    public void setSpeedX(double x) {
+        this.speedX = x;
+    }
+    public void setSpeedY(double y) {
+        this.speedY = y;
+    }
+    public double getSpeedX() {
+        return speedX;
+    }
+    public double getSpeedY() {
+        return speedY;
+    }
 
     public int getDiameter() {
         return diameter;
@@ -26,17 +46,6 @@ public class Ball {
     public void move() {
         x += speedX;
         y += speedY;
-
-
-        if (y <= 0 || y >= 780) {
-            reverseY();
-        }
-
-        if (x <= 0 || x >= 480) {
-            reverseX();
-        }
-
-
     }
     public void reverseX() {
         speedX = -speedX;
