@@ -22,7 +22,7 @@ public class Main {
         JPanel cards = new JPanel(new CardLayout());
         cards.add(mainMenu, "MainMenu");
         cards.add(gamePanel, "GamePanel");
-
+        //123
         frame.add(cards);
 
         mainMenu.setCardLayout((CardLayout) cards.getLayout());

@@ -47,7 +47,7 @@ public class GameEngine implements ActionListener, KeyListener {
 
             if (gameOver) {
                 return;
-            }
+            }//123
 
             if (rightKey) {
                 int newPlayerX = gamePanel.getPlayer().getX() + 15;

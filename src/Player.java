@@ -6,7 +6,7 @@ public class Player {
 
     public Player(int x, int y, int width, int height) {
         this.x = x;
-        this.y = y;
+        this.y = y;//123
         this.width = width;
         this.height = height;
     }

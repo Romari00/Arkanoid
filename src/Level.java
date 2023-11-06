@@ -11,7 +11,7 @@ public class Level {
 
     private void initializeLevel() {
         int rowCount = 5;
-        int columnCount = 5;
+        int columnCount = 5;//123
         int blockWidth = 60;
         int blockHeight = 20;
 

@@ -7,7 +7,7 @@ public class GamePanel extends JPanel {
     private Player player;
     private List<Block> blocks;
     private int score;
-
+//123
     public GamePanel() {
         setPreferredSize(new Dimension(800, 1000));
         ball = new Ball(300, 200, 20, -10, 10);
