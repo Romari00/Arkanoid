@@ -6,10 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serializable;
 import java.util.List;
 
 
-public class GameEngine implements ActionListener, KeyListener {
+public class GameEngine implements ActionListener, KeyListener, Serializable {
     private GamePanel gamePanel;
     private MainMenu mainMenu;
     private boolean leftKey = false;
@@ -19,7 +20,7 @@ public class GameEngine implements ActionListener, KeyListener {
     private boolean gameOver = false;
     private Level level;
     private int score = 0;
-    private boolean inMainMenu;
+
 
 
 
@@ -37,9 +38,9 @@ public class GameEngine implements ActionListener, KeyListener {
     }
 
     public void updateGame() {
-        if (!inMainMenu) {
+        if (!mainMenu.getInMainMenu()) {
             if (leftKey) {
-                int newPlayerX = gamePanel.getPlayer().getX() - 15;
+                int newPlayerX = gamePanel.getPlayer().getX() - 10;
                 if (newPlayerX >= 0) {
                     gamePanel.getPlayer().setX(newPlayerX);
                 }
@@ -50,7 +51,7 @@ public class GameEngine implements ActionListener, KeyListener {
             }//123
 
             if (rightKey) {
-                int newPlayerX = gamePanel.getPlayer().getX() + 15;
+                int newPlayerX = gamePanel.getPlayer().getX() + 10;
                 if (newPlayerX + gamePanel.getPlayer().getWidth() <= gamePanel.getWidth()) {
                     gamePanel.getPlayer().setX(newPlayerX);
                 }
@@ -78,13 +79,13 @@ public class GameEngine implements ActionListener, KeyListener {
             }
 
             if (gamePanel.getBall().getY() == 990) {
-                gamePanel.getBall().setY(500);
+                gamePanel.getBall().setY(950);
                 gamePanel.getBall().setX(500);
                 gamePanel.getPlayer().setX(400);
                 gamePanel.repaint();
                 SwingUtilities.invokeLater(() -> {
                     gameOver = true;
-                    JOptionPane.showMessageDialog(frame, "Опять зафидил..", "Игра окончена", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Проиграл", "Игра окончена", JOptionPane.INFORMATION_MESSAGE);
                     gameOver = false;
                 });
             }
@@ -110,7 +111,7 @@ public class GameEngine implements ActionListener, KeyListener {
                 gamePanel.getPlayer().setX(400);
                 gamePanel.repaint();
                 gameOver = true;
-                JOptionPane.showMessageDialog(frame, "The next level play", "Уровень пройден", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Next level", "Уровень пройден", JOptionPane.INFORMATION_MESSAGE);
                 level.NewLev();
                 gameOver = false;
             }
@@ -131,7 +132,6 @@ public class GameEngine implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // Пустая реализация
     }
 
     @Override

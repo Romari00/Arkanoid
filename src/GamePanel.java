@@ -1,8 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.List;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements Serializable {
     private Ball ball;
     private Player player;
     private List<Block> blocks;
@@ -10,11 +11,32 @@ public class GamePanel extends JPanel {
 //123
     public GamePanel() {
         setPreferredSize(new Dimension(800, 1000));
-        ball = new Ball(300, 200, 20, -10, 10);
-        player = new Player(200, 970, 200, 20);
-        this.blocks = blocks;
+        ball = new Ball(500, 950, 20, -10, 10);
+        player = new Player(400, 970, 200, 20);
+   //    this.blocks = blocks;
         score = 0;
 
+    }
+
+    public void serializeGameState(String filename) {
+        try (FileOutputStream fileOut = new FileOutputStream(filename);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this); // Сериализация текущего состояния игры
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deserializeGameState(String filename) {
+        try (FileInputStream fileIn = new FileInputStream(filename);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            GamePanel loadedGamePanel = (GamePanel) in.readObject();
+            this.ball = loadedGamePanel.ball;
+            this.player = loadedGamePanel.player;
+            this.blocks = loadedGamePanel.blocks;
+            this.score = loadedGamePanel.score;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public Ball getBall() {
@@ -26,7 +48,7 @@ public class GamePanel extends JPanel {
     }
 
     public void setBlocks(List<Block> blocks) {
-        this.blocks = blocks; // Устанавливаем список блоков
+        this.blocks = blocks;
     }
     public void increaseScore(int points) {
         score += points;
@@ -39,7 +61,7 @@ public class GamePanel extends JPanel {
         g.fillOval(ball.getX(), ball.getY(), ball.getDiameter(), ball.getDiameter());
         if (blocks != null) {
             for (Block block : blocks) {
-                g.setColor(Color.blue); // цвет блоков
+                g.setColor(Color.blue);
                 g.fillRect(block.getX(), block.getY(), block.getWidth(), block.getHeight());
             }
         }

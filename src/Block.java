@@ -1,4 +1,5 @@
-public class Block {
+import java.io.Serializable;
+public class Block implements Serializable {
     private int x;
     private int y;
     private int width;

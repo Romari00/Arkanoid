@@ -1,5 +1,6 @@
-
-public class Ball {
+import java.io.*;
+import java.awt.*;
+public class Ball implements Serializable {
     private int x;
     private int y;
     private int diameter;
@@ -13,6 +14,26 @@ public class Ball {
         this.diameter = diameter;
         this.speedX = speedX;
         this.speedY = speedY;
+    }
+
+    public void serialize(String filename) {
+        try (FileOutputStream fileOut = new FileOutputStream(filename);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Ball deserialize(String filename) {
+        Ball ball = null;
+        try (FileInputStream fileIn = new FileInputStream(filename);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            ball = (Ball) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ball;
     }
 
     public int getX() {
@@ -29,12 +50,6 @@ public class Ball {
     }
     public void setSpeedX(double x) {
         this.speedX = x;
-    }
-    public void setSpeedY(double y) {
-        this.speedY = y;
-    }
-    public double getSpeedX() {
-        return speedX;
     }
     public double getSpeedY() {
         return speedY;
