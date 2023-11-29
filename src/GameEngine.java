@@ -19,8 +19,6 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
     private JFrame frame;
     private boolean gameOver = false;
     private Level level;
-    private int score = 0;
-
 
 
 
@@ -32,7 +30,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
         gamePanel.addKeyListener(this);
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
-        level = new Level();
+        level = new Level(1,3,60,20, 800, 1000);
         gamePanel.setBlocks(level.getBlocks());
 
     }
@@ -48,7 +46,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
 
             if (gameOver) {
                 return;
-            }//123
+            }
 
             if (rightKey) {
                 int newPlayerX = gamePanel.getPlayer().getX() + 10;
@@ -85,6 +83,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
                 gamePanel.repaint();
                 SwingUtilities.invokeLater(() -> {
                     gameOver = true;
+                    gamePanel.saveGameState("game_state.ser");
                     JOptionPane.showMessageDialog(frame, "Проиграл", "Игра окончена", JOptionPane.INFORMATION_MESSAGE);
                     gameOver = false;
                 });
@@ -92,27 +91,46 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
 
 
             gamePanel.getBall().move();
-            List<Block> blocks = level.getBlocks();
+            List<Block> blocks = gamePanel.getBlocks();
+            if (blocks == null) {
+                gamePanel.initializeLevel();
+                blocks = gamePanel.getBlocks();
+            }
             for (int i = 0; i < blocks.size(); i++) {
                 Block block = blocks.get(i);
-                if (gamePanel.getBall().getX() + gamePanel.getBall().getDiameter() >= block.getX() &&
-                        gamePanel.getBall().getX() <= block.getX() + block.getWidth() &&
-                        gamePanel.getBall().getY() + gamePanel.getBall().getDiameter() >= block.getY() &&
-                        gamePanel.getBall().getY() <= block.getY() + block.getHeight()) {
+
+                double ballCenterX = gamePanel.getBall().getX() + gamePanel.getBall().getDiameter()/2;
+                double ballCenterY = gamePanel.getBall().getY() + gamePanel.getBall().getDiameter()/2;
+
+                double blockCenterX = block.getX() + block.getWidth() / 2;
+                double blockCenterY = block.getY() + block.getHeight() / 2;
+
+                double deltaX = Math.abs(ballCenterX - blockCenterX) - (gamePanel.getBall().getDiameter()/2 + block.getWidth() / 2);
+                double deltaY = Math.abs(ballCenterY - blockCenterY) - (gamePanel.getBall().getDiameter()/2 + block.getHeight() / 2);
+
+                if (deltaX <= 0 && deltaY <= 0) {
+                    if (deltaX > deltaY) {
+                        gamePanel.getBall().reverseX();
+                    } else {
+                        gamePanel.getBall().reverseY();
+                    }
+
                     blocks.remove(i);
                     i--;
-                    gamePanel.getBall().reverseY();
+
                     gamePanel.increaseScore(100);
                 }
             }
-            if (blocks.isEmpty()) {
+
+
+            if (blocks.isEmpty() && !gameOver) {
                 gamePanel.getBall().setY(500);
                 gamePanel.getBall().setX(500);
                 gamePanel.getPlayer().setX(400);
                 gamePanel.repaint();
                 gameOver = true;
                 JOptionPane.showMessageDialog(frame, "Next level", "Уровень пройден", JOptionPane.INFORMATION_MESSAGE);
-                level.NewLev();
+                level.generateNewLevel(1,3,60,20);
                 gameOver = false;
             }
             gamePanel.repaint();

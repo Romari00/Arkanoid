@@ -8,35 +8,49 @@ public class GamePanel extends JPanel implements Serializable {
     private Player player;
     private List<Block> blocks;
     private int score;
-//123
+    private GameEngine gameEngine;
+    private Level level;
+
     public GamePanel() {
         setPreferredSize(new Dimension(800, 1000));
         ball = new Ball(500, 950, 20, -10, 10);
         player = new Player(400, 970, 200, 20);
-   //    this.blocks = blocks;
         score = 0;
 
     }
 
-    public void serializeGameState(String filename) {
-        try (FileOutputStream fileOut = new FileOutputStream(filename);
-             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(this); // Сериализация текущего состояния игры
+    public void saveGameState(String filename) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(ball);
+            out.writeObject(player);
+            out.writeObject(blocks);
+            out.writeInt(score);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void deserializeGameState(String filename) {
-        try (FileInputStream fileIn = new FileInputStream(filename);
-             ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            GamePanel loadedGamePanel = (GamePanel) in.readObject();
-            this.ball = loadedGamePanel.ball;
-            this.player = loadedGamePanel.player;
-            this.blocks = loadedGamePanel.blocks;
-            this.score = loadedGamePanel.score;
+
+    public void loadGameState(String filename) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            ball = (Ball) in.readObject();
+            player = (Player) in.readObject();
+            blocks = (List<Block>) in.readObject();
+            score = in.readInt();
+            repaint();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    public void initializeLevel() {
+        blocks = level.getBlocks();
+    }
+
+    public void startNewGame() {
+        ball = new Ball(500, 950, 20, -10, 10);
+        player = new Player(400, 970, 200, 20);
+        initializeLevel();
+        score = 0;
+        repaint();
     }
 
     public Ball getBall() {
@@ -49,6 +63,9 @@ public class GamePanel extends JPanel implements Serializable {
 
     public void setBlocks(List<Block> blocks) {
         this.blocks = blocks;
+    }
+    public List<Block> getBlocks() {
+        return blocks;
     }
     public void increaseScore(int points) {
         score += points;

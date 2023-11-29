@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 import java.awt.CardLayout;
 import java.io.Serializable;
 
-
 public class MainMenu extends JPanel implements Serializable {
     private JButton startButton;
     private GamePanel gamePanel;
@@ -12,12 +11,11 @@ public class MainMenu extends JPanel implements Serializable {
     private CardLayout cardLayout;
     private JButton startNewGameButton;
 
-    public MainMenu(GamePanel gamePanel)  {
+    public MainMenu(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
-        startButton = new JButton("Start Game");
+        startButton = new JButton("Продолжить игру");
         startButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGame();
@@ -26,43 +24,54 @@ public class MainMenu extends JPanel implements Serializable {
 
         add(startButton);
 
-        startNewGameButton = new JButton("Start New Game");
+        startNewGameButton = new JButton("Новая игра");
         startNewGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGame();
+                startNewGame();
             }
         });
 
-        add(startButton);
         add(startNewGameButton);
     }
-
 
     public void setCardLayout(CardLayout cardLayout) {
         this.cardLayout = cardLayout;
     }
 
     private void startGame() {
-        System.out.println("Start Game button pressed");
-        gamePanel.serializeGameState("game_state.ser");
+        if (!inMainMenu) {
+            return;
+        }
+
         cardLayout.show(getParent(), "GamePanel");
         gamePanel.requestFocusInWindow();
-        this.inMainMenu = false;
+
+        if (startButton.getModel().isEnabled()) {
+            gamePanel.loadGameState("game_state.ser");
+         }
+
+
+        inMainMenu = false;
     }
 
-//    private void startNewGame() {
-//        System.out.println("Start New Game button pressed");
+    private void startNewGame() {
+        if (!inMainMenu) {
+            return;
+        }
 
-//        gamePanel.startNewGame();
-//        cardLayout.show(getParent(), "GamePanel");
-//        gamePanel.requestFocusInWindow();
-//        this.inMainMenu = false;
-//    }
+        cardLayout.show(getParent(), "GamePanel");
+        gamePanel.requestFocusInWindow();
 
+        if (startNewGameButton.getModel().isEnabled()) {
+            gamePanel.startNewGame();
+        }
+
+
+        inMainMenu = false;
+    }
 
     public boolean getInMainMenu() {
         return inMainMenu;
     }
-}//123
-
+}
