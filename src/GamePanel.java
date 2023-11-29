@@ -45,6 +45,11 @@ public class GamePanel extends JPanel implements Serializable {
         blocks = level.getBlocks();
     }
 
+    public void setLevel(Level level) {
+        this.level = level;
+        initializeLevel();
+    }
+
     public void startNewGame() {
         ball = new Ball(500, 950, 20, -10, 10);
         player = new Player(400, 970, 200, 20);

@@ -32,7 +32,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
         gamePanel.requestFocusInWindow();
         level = new Level(1,3,60,20, 800, 1000);
         gamePanel.setBlocks(level.getBlocks());
-
+        gamePanel.setLevel(level);
     }
 
     public void updateGame() {
@@ -130,7 +130,8 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
                 gamePanel.repaint();
                 gameOver = true;
                 JOptionPane.showMessageDialog(frame, "Next level", "Уровень пройден", JOptionPane.INFORMATION_MESSAGE);
-                level.generateNewLevel(1,3,60,20);
+                level.generateNewLevel(3,3,60,20);
+                gamePanel.setLevel(level);
                 gameOver = false;
             }
             gamePanel.repaint();
