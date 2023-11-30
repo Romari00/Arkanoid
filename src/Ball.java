@@ -7,7 +7,6 @@ public class Ball implements Serializable {
     private double speedX;
     private double speedY;
 
-//123
     public Ball(int x, int y, int diameter, double speedX,double speedY) {
         this.x = x;
         this.y = y;

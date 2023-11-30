@@ -19,6 +19,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
     private JFrame frame;
     private boolean gameOver = false;
     private Level level;
+    private Player player;
 
 
 
@@ -30,7 +31,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
         gamePanel.addKeyListener(this);
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
-        level = new Level(1,3,60,20, 800, 1000);
+        level = new Level(15,12,60,20, 800, 1000);
         gamePanel.setBlocks(level.getBlocks());
         gamePanel.setLevel(level);
     }
@@ -80,11 +81,13 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
                 gamePanel.getBall().setY(950);
                 gamePanel.getBall().setX(500);
                 gamePanel.getPlayer().setX(400);
+                gamePanel.decreaseLives();
                 gamePanel.repaint();
+
                 SwingUtilities.invokeLater(() -> {
                     gameOver = true;
                     gamePanel.saveGameState("game_state.ser");
-                    JOptionPane.showMessageDialog(frame, "Проиграл", "Игра окончена", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Осторожней", "Анлак", JOptionPane.INFORMATION_MESSAGE);
                     gameOver = false;
                 });
             }
@@ -130,11 +133,17 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
                 gamePanel.repaint();
                 gameOver = true;
                 JOptionPane.showMessageDialog(frame, "Next level", "Уровень пройден", JOptionPane.INFORMATION_MESSAGE);
-                level.generateNewLevel(3,3,60,20);
+                level.generateNewLevel(5,5,60,20);
                 gamePanel.setLevel(level);
                 gameOver = false;
             }
             gamePanel.repaint();
+
+            if (gamePanel.getLives() == 0) {
+                gameOver = true;
+                JOptionPane.showMessageDialog(frame, "Вы проиграли", "Конец игры", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
         }
     }
 

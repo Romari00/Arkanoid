@@ -10,7 +10,7 @@ public class Level implements Serializable {
         int levelWidth = columnCount * (blockWidth + 5);
         int levelHeight = rowCount * (blockHeight + 5);
         int xOffset = (screenWidth - levelWidth) / 2;
-        int yOffset = ((screenHeight - levelHeight) / 2 )-400;
+        int yOffset = ((screenHeight - levelHeight) / 2 )-250;
         initializeLevel(rowCount, columnCount, blockWidth, blockHeight, screenWidth, screenHeight, xOffset, yOffset);
     }
 
@@ -18,7 +18,9 @@ public class Level implements Serializable {
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < columnCount; col++) {
                 int x = xOffset + col * (blockWidth + 5);
+                System.out.println(x);
                 int y = yOffset + row * (blockHeight + 5);
+                System.out.println(y);
                 Block block = new Block(x, y, blockWidth, blockHeight);
                 blocks.add(block);
             }

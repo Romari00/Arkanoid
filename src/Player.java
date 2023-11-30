@@ -6,9 +6,10 @@ public class Player implements Serializable {
     private int width;
     private int height;
 
+
     public Player(int x, int y, int width, int height) {
         this.x = x;
-        this.y = y;//123
+        this.y = y;
         this.width = width;
         this.height = height;
     }

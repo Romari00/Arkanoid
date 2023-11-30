@@ -10,13 +10,14 @@ public class GamePanel extends JPanel implements Serializable {
     private int score;
     private GameEngine gameEngine;
     private Level level;
+    private int lives;
 
     public GamePanel() {
         setPreferredSize(new Dimension(800, 1000));
         ball = new Ball(500, 950, 20, -10, 10);
         player = new Player(400, 970, 200, 20);
         score = 0;
-
+        lives = 3;
     }
 
     public void saveGameState(String filename) {
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel implements Serializable {
             out.writeObject(player);
             out.writeObject(blocks);
             out.writeInt(score);
+            out.writeInt(lives);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,6 +38,7 @@ public class GamePanel extends JPanel implements Serializable {
             player = (Player) in.readObject();
             blocks = (List<Block>) in.readObject();
             score = in.readInt();
+            lives = in.readInt();
             repaint();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -55,6 +58,7 @@ public class GamePanel extends JPanel implements Serializable {
         player = new Player(400, 970, 200, 20);
         initializeLevel();
         score = 0;
+        lives = 3;
         repaint();
     }
 
@@ -75,6 +79,12 @@ public class GamePanel extends JPanel implements Serializable {
     public void increaseScore(int points) {
         score += points;
     }
+    public int getLives() {
+        return lives;
+    }
+    public void decreaseLives() {
+        lives -= 1;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -90,5 +100,6 @@ public class GamePanel extends JPanel implements Serializable {
         g.setColor(Color.black);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString("Score: " + score, getWidth() - 150, 30);
+        g.drawString("Lives: " + lives, getWidth() - 750, 30);
     }
 }
