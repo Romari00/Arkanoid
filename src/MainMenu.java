@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.CardLayout;
 import java.io.Serializable;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 public class MainMenu extends JPanel implements Serializable {
     private JButton startButton;
@@ -14,6 +16,9 @@ public class MainMenu extends JPanel implements Serializable {
     public MainMenu(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
+        // Use FlowLayout with vertical alignment
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+
         startButton = new JButton("Продолжить игру");
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -21,6 +26,8 @@ public class MainMenu extends JPanel implements Serializable {
                 startGame();
             }
         });
+
+        startButton.setPreferredSize(new Dimension(250, 80));
 
         add(startButton);
 
@@ -31,6 +38,7 @@ public class MainMenu extends JPanel implements Serializable {
                 startNewGame();
             }
         });
+        startNewGameButton.setPreferredSize(new Dimension(250, 80));
 
         add(startNewGameButton);
     }
@@ -49,8 +57,7 @@ public class MainMenu extends JPanel implements Serializable {
 
         if (startButton.getModel().isEnabled()) {
             gamePanel.loadGameState("game_state.ser");
-         }
-
+        }
 
         inMainMenu = false;
     }
@@ -66,7 +73,6 @@ public class MainMenu extends JPanel implements Serializable {
         if (startNewGameButton.getModel().isEnabled()) {
             gamePanel.startNewGame();
         }
-
 
         inMainMenu = false;
     }

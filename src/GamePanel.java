@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements Serializable {
         player = new Player(400, 970, 200, 20);
         score = 0;
         lives = 3;
+
     }
 
     public void saveGameState(String filename) {
