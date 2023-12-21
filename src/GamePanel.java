@@ -8,7 +8,6 @@ public class GamePanel extends JPanel implements Serializable {
     private Player player;
     private List<Block> blocks;
     private int score;
-    private GameEngine gameEngine;
     private Level level;
     private int lives;
 

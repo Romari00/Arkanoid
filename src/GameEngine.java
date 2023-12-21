@@ -19,7 +19,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
     private JFrame frame;
     private boolean gameOver = false;
     private Level level;
-    private Player player;
+    private boolean pause = false;
 
 
 
@@ -86,8 +86,7 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
 
                 SwingUtilities.invokeLater(() -> {
                     gameOver = true;
-                    gamePanel.saveGameState("game_state.ser");
-                    JOptionPane.showMessageDialog(frame, "Осторожней", "Анлак", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Осторожней", "Вы потеряли жизнь", JOptionPane.INFORMATION_MESSAGE);
                     gameOver = false;
                 });
             }
@@ -180,6 +179,9 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             rightKey = true;
         }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            pauseGame();
+        }
     }
 
     private void handleKeyRelease(KeyEvent e) {
@@ -188,6 +190,16 @@ public class GameEngine implements ActionListener, KeyListener, Serializable {
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             rightKey = false;
+        }
+    }
+
+    private void pauseGame() {
+        pause = !pause;
+        if (pause) {
+            timer.stop();
+            gamePanel.saveGameState("game_state.ser");
+            JOptionPane.showMessageDialog(frame, "Игра на паузе и сохранена", "Пауза", JOptionPane.INFORMATION_MESSAGE);
+            timer.start();
         }
     }
 }

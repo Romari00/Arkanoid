@@ -16,7 +16,6 @@ public class MainMenu extends JPanel implements Serializable {
     public MainMenu(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
-        // Use FlowLayout with vertical alignment
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
 
         startButton = new JButton("Продолжить игру");
